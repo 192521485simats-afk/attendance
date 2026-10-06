@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Students Attendance System</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    margin: 0;
+    background: #f2f6fc;
+    color: #222;
+}
+
+header {
+    background: #1565c0;
+    color: white;
+    text-align: center;
+    padding: 25px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 30px;
+}
+
+header p {
+    margin: 8px 0 0;
+}
+
+.container {
+    width: 90%;
+    max-width: 1100px;
+    margin: 30px auto;
+}
+
+.card {
+    background: white;
+    padding: 25px;
+    margin-bottom: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+h2 {
+    color: #1565c0;
+    margin-top: 0;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+}
+
+.full {
+    grid-column: span 2;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 7px;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #bbb;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+button {
+    background: #1565c0;
+    color: white;
+    border: none;
+    padding: 13px 25px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background: #0d47a1;
+}
+
+.result {
+    display: none;
+}
+
+.attendance-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.attendance-table th,
+.attendance-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+}
+
+.attendance-table th {
+    background: #1565c0;
+    color: white;
+}
+
+.summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.box {
+    background: #e3f2fd;
+    padding: 18px;
+    text-align: center;
+    border-radius: 8px;
+}
+
+.box h3 {
+    margin: 0 0 8px;
+    color: #1565c0;
+}
+
+.box p {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.status {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 8px;
+    background: #e8f5e9;
+    border-left: 5px solid #2e7d32;
+}
+
+.status h2 {
+    color: #2e7d32;
+}
+
+footer {
+    background: #1565c0;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    margin-top: 40px;
+}
+
+@media(max-width:700px) {
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .full {
+        grid-column: span 1;
+    }
+
+    .summary {
+        grid-template-columns: 1fr;
+    }
+
+    .attendance-table {
+        font-size: 13px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>📋 Students Attendance System</h1>
+
+<p>Cloud-Based SaaS Application</p>
+
+</header>
+
+
+
+<div class="container">
+
+
+<!-- STUDENT DETAILS -->
+
+<div class="card">
+
+<h2>👨‍🎓 Student Information</h2>
+
+<div class="form-grid">
+
+
+<div>
+
+<label>Student Name</label>
+
+<input
+type="text"
+id="studentName"
+placeholder="Enter student name">
+
+</div>
+
+
+<div>
+
+<label>Register Number</label>
+
+<input
+type="text"
+id="regNo"
+placeholder="Enter register number">
+
+</div>
+
+
+<div>
+
+<label>Course</label>
+
+<select id="course">
+
+<option value="">Select Course</option>
+
+<option>Computer Science Engineering</option>
+
+<option>Information Technology</option>
+
+<option>Electronics and Communication Engineering</option>
+
+<option>Electrical and Electronics Engineering</option>
+
+<option>Mechanical Engineering</option>
+
+<option>Artificial Intelligence and Data Science</option>
+
+</select>
+
+</div>
+
+
+<div>
+
+<label>Semester</label>
+
+<select id="semester">
+
+<option>Semester 1</option>
+
+<option>Semester 2</option>
+
+<option>Semester 3</option>
+
+<option>Semester 4</option>
+
+<option>Semester 5</option>
+
+<option>Semester 6</option>
+
+<option>Semester 7</option>
+
+<option>Semester 8</option>
+
+</select>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+
+<!-- ATTENDANCE DETAILS -->
+
+<div class="card">
+
+<h2>📅 Attendance Details</h2>
+
+
+<div class="form-grid">
+
+
+<div>
+
+<label>Total Classes Conducted</label>
+
+<input
+type="number"
+id="totalClasses"
+min="1"
+placeholder="Example: 50">
+
+</div>
+
+
+<div>
+
+<label>Present</label>
+
+<input
+type="number"
+id="present"
+min="0"
+placeholder="Example: 45">
+
+</div>
+
+
+<div>
+
+<label>Absent</label>
+
+<input
+type="number"
+id="absent"
+min="0"
+placeholder="Example: 5">
+
+</div>
+
+
+<div>
+
+<label>OD Request</label>
+
+<select id="od">
+
+<option value="0">No OD</option>
+
+<option value="1">1 Class</option>
+
+<option value="2">2 Classes</option>
+
+<option value="3">3 Classes</option>
+
+<option value="4">4 Classes</option>
+
+<option value="5">5 Classes</option>
+
+</select>
+
+</div>
+
+
+</div>
+
+
+<br>
+
+
+<button onclick="processAttendance()">
+
+⚙️ Process Attendance
+
+</button>
+
+
+</div>
+
+
+
+<!-- RESULT -->
+
+<div class="card result" id="result">
+
+<h2>📊 Attendance Report</h2>
+
+
+<p>
+<b>Student Name:</b>
+<span id="resultName"></span>
+</p>
+
+
+<p>
+<b>Register Number:</b>
+<span id="resultReg"></span>
+</p>
+
+
+<p>
+<b>Course:</b>
+<span id="resultCourse"></span>
+</p>
+
+
+<p>
+<b>Semester:</b>
+<span id="resultSemester"></span>
+</p>
+
+
+
+<table class="attendance-table">
+
+
+<tr>
+
+<th>Attendance Details</th>
+
+<th>Value</th>
+
+</tr>
+
+
+<tr>
+
+<td>Total Classes</td>
+
+<td id="resultTotal"></td>
+
+</tr>
+
+
+<tr>
+
+<td>Present</td>
+
+<td id="resultPresent"></td>
+
+</tr>
+
+
+<tr>
+
+<td>Absent</td>
+
+<td id="resultAbsent"></td>
+
+</tr>
+
+
+<tr>
+
+<td>OD Request</td>
+
+<td id="resultOD"></td>
+
+</tr>
+
+
+<tr>
+
+<td>Effective Attendance</td>
+
+<td id="resultEffective"></td>
+
+</tr>
+
+
+</table>
+
+
+
+<!-- SUMMARY -->
+
+<div class="summary">
+
+
+<div class="box">
+
+<h3>Attendance %</h3>
+
+<p>
+<span id="attendancePercentage"></span>%
+</p>
+
+</div>
+
+
+<div class="box">
+
+<h3>Grade</h3>
+
+<p id="attendanceGrade"></p>
+
+</div>
+
+
+<div class="box">
+
+<h3>Status</h3>
+
+<p id="attendanceStatus"></p>
+
+</div>
+
+
+</div>
+
+
+
+<!-- PERFORMANCE -->
+
+<div class="status">
+
+<h2>🎓 Overall Attendance Performance</h2>
+
+<p id="performance"></p>
+
+</div>
+
+
+<br>
+
+
+<button onclick="window.print()">
+
+🖨 Print Attendance Report
+
+</button>
+
+
+</div>
+
+
+</div>
+
+
+
+<footer>
+
+Students Attendance System |
+SaaS Cloud Application |
+GitHub Pages
+
+</footer>
+
+
+
+<script>
+
+
+function processAttendance() {
+
+
+/* STUDENT DETAILS */
+
+
+let name =
+document.getElementById("studentName").value;
+
+let reg =
+document.getElementById("regNo").value;
+
+let course =
+document.getElementById("course").value;
+
+let semester =
+document.getElementById("semester").value;
+
+
+/* ATTENDANCE DETAILS */
+
+
+let total =
+Number(document.getElementById("totalClasses").value);
+
+let present =
+Number(document.getElementById("present").value);
+
+let absent =
+Number(document.getElementById("absent").value);
+
+let od =
+Number(document.getElementById("od").value);
+
+
+/* VALIDATION */
+
+
+if(name === "" || reg === "") {
+
+    alert(
+        "Please enter Student Name and Register Number."
+    );
+
+    return;
+}
+
+
+if(course === "") {
+
+    alert("Please select the Course.");
+
+    return;
+}
+
+
+if(total <= 0) {
+
+    alert(
+        "Total Classes must be greater than zero."
+    );
+
+    return;
+}
+
+
+if(present < 0 || absent < 0) {
+
+    alert(
+        "Present and Absent cannot be negative."
+    );
+
+    return;
+}
+
+
+/* CHECK ATTENDANCE */
+
+if(present + absent > total) {
+
+    alert(
+        "Present + Absent cannot be greater than Total Classes."
+    );
+
+    return;
+}
+
+
+/*
+OD classes are considered authorized attendance
+and are added to effective attendance.
+*/
+
+let effectivePresent =
+present + od;
+
+
+/* EFFECTIVE ATTENDANCE CANNOT EXCEED TOTAL */
+
+if(effectivePresent > total) {
+
+    effectivePresent = total;
+
+}
+
+
+/* CALCULATE ATTENDANCE */
+
+let percentage =
+(effectivePresent / total) * 100;
+
+
+/* GRADE */
+
+let grade;
+
+
+if(percentage >= 90) {
+
+    grade = "A+";
+
+}
+
+else if(percentage >= 80) {
+
+    grade = "A";
+
+}
+
+else if(percentage >= 75) {
+
+    grade = "B";
+
+}
+
+else if(percentage >= 65) {
+
+    grade = "C";
+
+}
+
+else if(percentage >= 50) {
+
+    grade = "D";
+
+}
+
+else {
+
+    grade = "F";
+
+}
+
+
+/* STATUS */
+
+let status;
+
+
+if(percentage >= 75) {
+
+    status = "ELIGIBLE";
+
+}
+
+else {
+
+    status = "SHORTAGE";
+
+}
+
+
+/* PERFORMANCE MESSAGE */
+
+let performance;
+
+
+if(percentage >= 90) {
+
+    performance =
+    "Excellent attendance. Keep maintaining the same level! 🌟";
+
+}
+
+else if(percentage >= 80) {
+
+    performance =
+    "Very good attendance. Keep it up! 👏";
+
+}
+
+else if(percentage >= 75) {
+
+    performance =
+    "Good attendance. You are eligible for examinations. 👍";
+
+}
+
+else if(percentage >= 65) {
+
+    performance =
+    "Attendance is below the required level. Improve your attendance.";
+
+}
+
+else {
+
+    performance =
+    "Poor attendance. Immediate improvement is required.";
+
+}
+
+
+/* DISPLAY STUDENT DETAILS */
+
+
+document.getElementById("resultName")
+.innerText = name;
+
+
+document.getElementById("resultReg")
+.innerText = reg;
+
+
+document.getElementById("resultCourse")
+.innerText = course;
+
+
+document.getElementById("resultSemester")
+.innerText = semester;
+
+
+/* DISPLAY ATTENDANCE */
+
+
+document.getElementById("resultTotal")
+.innerText = total;
+
+
+document.getElementById("resultPresent")
+.innerText = present;
+
+
+document.getElementById("resultAbsent")
+.innerText = absent;
+
+
+document.getElementById("resultOD")
+.innerText =
+od + " Class(es)";
+
+
+document.getElementById("resultEffective")
+.innerText =
+effectivePresent;
+
+
+/* DISPLAY SUMMARY */
+
+
+document.getElementById("attendancePercentage")
+.innerText =
+percentage.toFixed(2);
+
+
+document.getElementById("attendanceGrade")
+.innerText =
+grade;
+
+
+document.getElementById("attendanceStatus")
+.innerText =
+status;
+
+
+/* PERFORMANCE */
+
+document.getElementById("performance")
+.innerText =
+performance;
+
+
+/* SHOW RESULT */
+
+document.getElementById("result")
+.style.display = "block";
+
+
+/* SCROLL */
+
+window.scrollTo({
+
+    top:
+    document.getElementById("result").offsetTop,
+
+    behavior: "smooth"
+
+});
+
+
+}
+
+</script>
+
+
+</body>
+
+</html>
